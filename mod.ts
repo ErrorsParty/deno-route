@@ -64,13 +64,14 @@ export function compileRoutes(
 ): RequestHandler {
   const map = new Map<URLPattern, Handler>();
   for (let pathname in routes) {
+    const originalPathname = pathname;
     const methodDefIndex = pathname.lastIndexOf("#");
     let hash = "*";
     if (methodDefIndex !== -1) {
       hash = pathname.substring(methodDefIndex, pathname.length).toLowerCase();
       pathname = pathname.substring(0, methodDefIndex);
     }
-    map.set(new URLPattern({ pathname, hash }), routes[pathname]);
+    map.set(new URLPattern({ pathname, hash }), routes[originalPathname]);
   }
   return createRequestHandler(map, callback);
 }
